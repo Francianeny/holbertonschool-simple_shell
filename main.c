@@ -10,29 +10,52 @@
 int main(void)
 {
     pid_t child_pid;
-    int status_child;
+    int status_child, i;
     char cmd[MAX_LINE_LENGTH];
-    char *argv[] = {cmd, NULL};
+    char **argv;
 
     while (1)
     {
         printf("#cisfun$ ");
+        // Read a line of text from stdin using getline
+        if (fgets(cmd, MAX_LINE_LENGTH, stdin) == NULL)
+        {
+            // Condition EOF (Ctrl+D)
+            printf("\n");
+            break;
+        }
 
-        fgets(cmd, MAX_LINE_LENGTH, stdin);
+        // Tokenize the input
+        i = 0;
+        argv = malloc((MAX_LINE_LENGTH / 2 + 1) * sizeof(char *));
+        if (argv == NULL)
+        {
+            perror("Error malloc");
+            exit(1);
+        }
 
+        argv[i] = strtok(cmd, " \n");
+        while (argv[i] != NULL)
+        {
+            i++;
+            argv[i] = strtok(NULL, " \n");
+        }
+        argv[i] = NULL;
+
+        // Create a child process and execute the command
         child_pid = fork();
         if (child_pid == -1)
         {
             perror("Error fork");
-            return (1);
+            exit(1);
         }
         if (child_pid == 0)
         {
-            // Execute the command in the child process
+            // Exécuter la commande dans le processus enfant
             if (execve(argv[0], argv, NULL) == -1)
             {
-                perror("Error execve");
-                return (1);
+                perror("./shell");
+                exit(1);
             }
         }
         else
@@ -41,11 +64,13 @@ int main(void)
             if (wait(&status_child) == -1)
             {
                 perror("Error wait");
-                return (1);
+                exit(1);
             }
         }
+
+        // Free the dynamically allocated memory for the command line
+        free(argv);
     }
-    return (0);
+
+    return 0;
 }
-
-
