@@ -1,28 +1,42 @@
 #include "shell.h"
 
-int main(void) {
-    char *cmd = NULL;
-    size_t cmd_buffer_size = 0;
-    ssize_t line_length;
-    
-    while (1) {
-        printf("#cisfun$ ");
-        line_length = getline(&cmd, &cmd_buffer_size, stdin);
+/**
+ * main - Entry point of the shell program
+ *
+ * Return: Always 0
+ */
+int main(void)
+{
+	char *cmd = NULL;
+	size_t cmd_buffer_size = 0;
+	ssize_t line_length;
+	int is_interactive = isatty(STDIN_FILENO);
 
-        if (line_length == -1) {
-            printf("\n");
-            break; // End of input file (Ctrl+D)
-        }
+	while (1)
+	{
+		if (is_interactive)
+		{
+			printf("($) ");
+		}
+		line_length = getline(&cmd, &cmd_buffer_size, stdin);
 
-        if (cmd[line_length - 1] == '\n') {
-            cmd[line_length - 1] = '\0'; // Remove the newline character
-        }
+		if (line_length == -1)
+		{
+			printf("\n");
+			break; /* End of input file (Ctrl+D) */
+		}
 
-        if (execute_command(cmd) == -1) {
-            printf("Error executing command\n");
-        }
-    }
+		if (cmd[line_length - 1] == '\n')
+		{
+			cmd[line_length - 1] = '\0'; /* Remove the newline character */
+		}
 
-    free(cmd); // Free the dynamically allocated memory for the command line
-    return 0;
+		if (execute_command(cmd) == -1)
+		{
+			printf("Error executing command\n");
+		}
+	}
+
+	free(cmd); /* Free the dynamically allocated memory for the command line */
+	return (0);
 }
