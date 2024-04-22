@@ -7,9 +7,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "shell.h"
 
-#define MAX_LINE_LENGTH 80
+#define MAX_LINE_LENGTH 1024
 #define MAX_ARGS 10
 
 extern char **environ;
