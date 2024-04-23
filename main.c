@@ -26,6 +26,12 @@ int main(void)
 			break; /* End of input file (Ctrl+D) */
 		}
 
+		if (line_length <= 1)
+		{
+			/* If the line is empty or contains only a newline character */
+			continue;
+		}
+
 		if (cmd[line_length - 1] == '\n')
 		{
 			cmd[line_length - 1] = '\0'; /* Remove the newline character */
