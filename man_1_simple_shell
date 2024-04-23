@@ -1,0 +1,106 @@
+.\"Modified from man(1) of FreeBSD, the NetBSD mdoc.template, and mdoc.samples.
+.\"See Also:
+.\"man mdoc.samples for a complete listing of options
+.\"man mdoc for the short list of editing options
+.\"/usr/share/misc/mdoc.template
+.Dd 23/04/24               \" DATE
+.Dt simple_shell 1     \" Program name and manual section number
+.Os Guerin/Ramarolahy
+.Th "Version 1.0"
+
+.Sh NAME
+.Nm simple_shell
+\- Simple Unix shell implementation
+.Sh SYNOPSIS
+.Ar gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+
+.B \fB./hsh\fR or
+\fBecho "
+.Ar [command]"
+| ./hsh\fR
+
+.Sh DESCRIPTION
+The \fBsimple_shell\fP program is a basic Unix shell written in C, providing a command\-line interface for executing commands. It supports built\-in commands such as \fBexit\fP to terminate the shell and \fBenv\fP to print environment variables.
+
+.Sh COMMANDS
+.Bl -tag -width -indent  \" Begins a tagged list
+.It \fBexit\fR
+Terminate the shell program.
+.It \fBenv\fR
+Print environment variables.
+.El
+
+.Sh FUNCTIONS
+
+.Bl -tag -width -indent  \" Begins a tagged list
+.It \fB_getenv(const char *name)\fR               \" Each item preceded by .It macro
+Get the value of an environment variable.
+.It \fBprint_environment(void)\fR
+Print all environment variables.
+.It \fBtokenize_input(char *cmd, char *argv[])\fR
+Tokenize the input command.
+.It \fB_strdup(char *str)\fR
+Duplicate a string and return a pointer to the allocated memory.
+.It \fBexecute_command(char *cmd)\fR
+Execute the given command.
+.It \fBfind_and_execute_command(char *argv[])\fR
+Find and execute the specified command.
+.It \fBexecute_command_with_path(char *command_path, char *argv[])\fR
+Execute the command with the specified path.
+.El
+
+.Sh RETURN VALUE
+The \fBsimple_shell\fP program returns 0 upon successful execution. In case of errors, appropriate error messages are displayed, and the program exits with a non\-zero exit status.
+
+.Sh EXAMPLES
+.sp
+.Bl -tag -width -indent  \" Begins a tagged list
+.It $ ./shell
+Run the shell.
+.It ($) exit
+Exit the shell.
+.It ($) env
+Print environment variables.
+.sp
+Simple_shell works in interactive mode:
+
+
+.Bl -tag -width -indent  \" Begins a tagged list
+.It $ ./hsh
+.It ($) /bin/ls
+.It hsh main.c shell.c
+.It ($)
+.It ($) exit
+.It $
+.El
+.Pp
+
+And in non-interactive mode:
+
+
+.Bl -tag -width -indent
+.It $ echo "/bin/ls" | ./hsh
+.It hsh main.c shell.c test_ls_2
+.It $
+.It $ cat test_ls_2
+.It /bin/ls
+.It /bin/ls
+.It $
+.It $ cat test_ls_2 | ./hsh
+.It hsh main.c shell.c test_ls_2
+.It hsh main.c shell.c test_ls_2
+.It $
+.El
+
+.Sh SEE ALSO
+\fBsh(1p)\fR, \fBexecve(2)\fR, \fBfork(2)\fR, \fBwait(2)\fR, \fBaccess(2)\fR, \fBstrtok(3)\fR, \fBgetline(3)\fR, \fBmalloc(3)\fR, \fBfree(3)\fR, \fBprintf(3)\fR, \fBstrcmp(3)\fR, \fBstrlen(3)\fR, \fBstrncmp(3)\fR.
+
+.Sh AUTHOR
+Tifenn GUERIN, Francia Ramarolahy
+
+.Sh BUGS
+No known bugs.
+
+
+.Pp
+.Th  SIMPLE_SHELL "23 April 2024" "version 1.0" "man_1_simple_shell"
