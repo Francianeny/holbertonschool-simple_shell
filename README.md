@@ -1,22 +1,37 @@
 # C - Simple Shell
 
 ### What is the shell ? :
+
 The shell is a program that takes commands from the keyboard via the terminal, and gives them to the operating system to perform. To better understand how the shell actually works, you can read  [Médium](https://medium.com/@winfrednginakilonzo/guide-to-code-a-simple-shell-in-c-bd4a3a4c41cd)
 
-### About this project:
+### About this project :
+
 This project is a simple version of the linux shell made for Holberton School taking part of the "Low-level programming & Algorithm - Linux and Unix system programming" projects.
 It is created using the C programming Language and it can do many functionalities that a real shell does.
 
-### Essential Functionalities of the Simple Shell:
-Displays a prompt "#cisfun$ " and waits for user input.
-Runs all commands of type "executable program" (ls and /bin/ls).
-Runs the following build_in commands: exit, env, setenv and unsetenv.
-Handles commands with arguments.
-Handles the PATH global variable.
-Handles The EOF (End Of File) condition.
-Handles the Ctrl + C signal -> It doesn't exit the shell
+### Requirements:
 
-### Files description:
+- Allowed editors: vi, vim, emacs
+- All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options -Wall -Werror -Wextra -pedantic -std=gnu89
+- All your files should end with a new line
+- A README.md file, at the root of the folder of the project is mandatory
+- Your code should use the Betty style. - It will be checked using betty-style.pl and betty-doc.pl
+- Your shell should not have any memory leaks
+- No more than 5 functions per file
+- All your header files should be include guarded
+- Use system calls only when you need to (why?)
+
+### Essential Functionalities of the Simple Shell :
+
+<p>- Displays a prompt "#cisfun$ " and waits for user input.<br>
+- Runs all commands of type "executable program" (ls and /bin/ls).<br>
+- Runs the following build_in commands: exit, env, setenv and unsetenv.<br>
+- Handles commands with arguments.<br>
+- Handles the PATH global variable.<br>
+- Handles The EOF (End Of File) condition.<br>
+- Handles the Ctrl + C signal -> It doesn't exit the shell
+
+### Files description :
 
 1. **AUTHORS** :  This file lists all individuals having contributed content to the repository
 <p>GuerinTifenn <8807@holbertonstudents.com><br>
@@ -33,10 +48,10 @@ _strncmp -> Takes as parameters the two strings to compare<br>
 _strdup -> Copy a string and returns pointer to a allocated space in memory
 
 5. **execute.c** :
-tokenize_input -> Tokenize the input command
-execute_command -> Execute the given command
-find_and_execute_command -> Find and execute the command
-_sprintf -> write formatted data into a string
+<p>tokenize_input -> Tokenize the input command<br>
+execute_command -> Execute the given command<br>
+find_and_execute_command -> Find and execute the command<br>
+_sprintf -> write formatted data into a string<br>
 execute_command_with_path -> Execute the command with the specified path
 
 6. **main.c** :
@@ -104,6 +119,11 @@ You can try your shell by following these steps:
 
 > ./hsh
 
+- ***Step 5*** :<p>*Interactive mode* :
+> ![alt text](<int mode.png>)<p>*Non-interactive mode* :
+(à vérifier)
+
+
 **Exiting the shell** When you want to exit the shell, you can use one of the following methods:
 
 1. Type the command "exit"
@@ -113,6 +133,10 @@ You can try your shell by following these steps:
 2. Press on Ctrl + D
 
 > ![alt text](<Capture d'écran 2024-04-23 150337.png>)
+
+
+
+
 
 
 
