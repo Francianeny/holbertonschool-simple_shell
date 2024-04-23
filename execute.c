@@ -67,7 +67,7 @@ int find_and_execute_command(char *argv[])
 		return (-1);
 	}
 
-	path_copy = strdup(path);
+	path_copy = _strdup(path);
 	if (path_copy == NULL)
 	{
 		perror("Error duplicating PATH string");
