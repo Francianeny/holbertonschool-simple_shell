@@ -30,11 +30,13 @@ int execute_command(char *cmd)
 
 	if (strcmp(cmd, "exit") == 0)
 	{
-		exit (1);
+		free(cmd);
+		exit (0);
 	}
 
 	if (strcmp(cmd, "env") == 0)
 	{
+		free(cmd);
 		print_environment();
 		return (0);
 	}
@@ -117,7 +119,8 @@ void execute_command_with_path(char *command_path, char *argv[])
 	int status_child;
 	pid_t child_pid = fork();
 
-	if (child_pid == -1) {
+	if (child_pid == -1)
+	{
 		perror("Error fork");
 		exit(1);
 	}
