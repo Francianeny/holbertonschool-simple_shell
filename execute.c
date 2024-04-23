@@ -55,7 +55,7 @@ int execute_command(char *cmd)
  * find_and_execute_command - Find and execute the command
  * @argv: Array of command arguments
  *
- * Return: 0 on success, -1 on failure
+ * Return: 0 on success, 1 on failure
  */
 int find_and_execute_command(char *argv[])
 {
@@ -66,14 +66,14 @@ int find_and_execute_command(char *argv[])
 	if (path == NULL)
 	{
 		perror("Error getting PATH environment variable");
-		return (-1);
+		return (1);
 	}
 
 	path_copy = _strdup(path);
 	if (path_copy == NULL)
 	{
 		perror("Error duplicating PATH string");
-		return (-1);
+		return (1);
 	}
 
 	path_token = strtok(path_copy, ":");
@@ -85,7 +85,7 @@ int find_and_execute_command(char *argv[])
 		if (command_path == NULL)
 		{
 			perror("Error allocating memory for command_path");
-			exit(1);
+			exit(127);
 		}
 		sprintf(command_path, "%s/%s", path_token, argv[0]);
 		if (access(command_path, X_OK) == 0)
@@ -122,7 +122,7 @@ void execute_command_with_path(char *command_path, char *argv[])
 	if (child_pid == -1)
 	{
 		perror("Error fork");
-		exit(1);
+		exit(127);
 	}
 	if (child_pid == 0)
 	{
@@ -130,7 +130,7 @@ void execute_command_with_path(char *command_path, char *argv[])
 		if (execve(command_path, argv, NULL) == -1)
 		{
 			perror("Error execve");
-			exit(1);
+			exit(127);
 		}
 	}
 	else
@@ -139,7 +139,7 @@ void execute_command_with_path(char *command_path, char *argv[])
 		if (wait(&status_child) == -1)
 		{
 			perror("Error wait");
-			exit(1);
+			exit(256);
 		}
 	}
 }
