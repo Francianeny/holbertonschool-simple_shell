@@ -25,11 +25,11 @@ int main(void)
 						if (is_interactive)
 						{
 								printf("\n");
-								exit (1); /* End of input file (Ctrl+D) */
+								exit (0); /* End of input file (Ctrl+D) */
 						}
 						else
 						{
-								exit (1); /* End of input file (Ctrl+D) */
+								exit (0); /* End of input file (Ctrl+D) */
 						}
 				}
 				if (line_length <= 1)

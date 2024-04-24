@@ -90,7 +90,7 @@ int find_and_execute_command(char *argv[])
                 if (command_path == NULL)
                 {
                         perror("Error allocating memory for command_path");
-                        exit(127);
+                        exit(1);
                 }
                 sprintf(command_path, "%s/%s", path_token, argv[0]);
                 if (access(command_path, X_OK) == 0)
@@ -130,7 +130,7 @@ void execute_command_with_path(char *command_path, char *argv[])
         {
                 perror("Error fork");
                 free(command_path);
-                exit(127);
+                exit(1);
         }
         if (child_pid == 0)
         {
@@ -141,13 +141,14 @@ void execute_command_with_path(char *command_path, char *argv[])
                         {
                                 count++;
                                 fprintf(stderr, "%s: %d: %s: not found\n", cwd, count, argv[0]);
-                        }
+								exit(127);
+						}
                         else
                         {
                                 perror("Error getting current directory");
+								exit(127);
                         }
                         free(command_path);
-                        exit(127);
                 }
         }
         else
@@ -157,7 +158,7 @@ void execute_command_with_path(char *command_path, char *argv[])
                 {
                         perror("Error wait");
                         free(command_path);
-                        exit(256);
+                        exit(127);
                 }
         }
 }
