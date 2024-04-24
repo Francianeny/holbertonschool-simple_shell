@@ -30,13 +30,11 @@ int execute_command(char *cmd)
 
 	if (strcmp(cmd, "exit") == 0)
 	{
-		free(cmd);
 		exit (0);
 	}
 
 	if (strcmp(cmd, "env") == 0)
 	{
-		free(cmd);
 		print_environment();
 		return (0);
 	}
@@ -117,6 +115,8 @@ int find_and_execute_command(char *argv[])
 void execute_command_with_path(char *command_path, char *argv[])
 {
 	int status_child;
+	int count = 0;
+	char cwd[PATH_MAX];
 	pid_t child_pid = fork();
 
 	if (child_pid == -1)
@@ -129,7 +129,15 @@ void execute_command_with_path(char *command_path, char *argv[])
 		/* Execute the command in the child process */
 		if (execve(command_path, argv, NULL) == -1)
 		{
-			perror("Error execve");
+			if (getcwd(cwd, sizeof(cwd)) != NULL)
+			{
+				count++;
+				fprintf(stderr, "%s: %d: %s: not found\n", cwd, count, argv[0]);
+			}
+			else
+			{
+				perror("Error getting current directory");
+			}
 			exit(127);
 		}
 	}

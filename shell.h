@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <limits.h>
 
 #define MAX_LINE_LENGTH 1024
 #define MAX_ARGS 10

@@ -5,7 +5,7 @@
  *
  * Return: Always 0
  */
-int main(void)
+int main(int argc, char *argv[])
 {
 	char *cmd = NULL;
 	size_t cmd_buffer_size = 0;
@@ -22,10 +22,16 @@ int main(void)
 
 		if (line_length == -1)
 		{
-			printf("\n");
-			break; /* End of input file (Ctrl+D) */
+			if (is_interactive)
+			{
+				printf("\n");
+				exit (1); /* End of input file (Ctrl+D) in interactive mode */
+			}
+			else
+			{
+				exit (1); /* (Ctrl+D) in non-interactive mode */
+			}
 		}
-
 		if (line_length <= 1)
 		{
 			/* If the line is empty or contains only a newline character */
