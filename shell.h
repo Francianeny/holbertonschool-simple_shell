@@ -20,6 +20,7 @@ char *_getenv(const char *name);
 void print_environment(void);
 void tokenize_input(char *cmd, char *argv[]);
 int find_and_execute_command(char *argv[]);
+int search_and_execute_command(char *path_copy, char *argv[]);
 void execute_command_with_path(char *command_path, char *argv[]);
 int execute_command(char *cmd);
 
