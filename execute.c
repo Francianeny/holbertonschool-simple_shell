@@ -158,14 +158,14 @@ void execute_command_with_path(char *command_path, char *argv[])
 			{
 				count++;
 				fprintf(stderr, "%s: %d: %s: not found\n", cwd, count, argv[0]);
-				exit(127);
 			}
 			else
 			{
 				perror("Error getting current directory");
-				exit(127);
 			}
 			free(command_path);
+			exit(127);
+
 		}
 	}
 	else
@@ -178,4 +178,5 @@ void execute_command_with_path(char *command_path, char *argv[])
 			exit(127);
 		}
 	}
+	free(command_path);
 }

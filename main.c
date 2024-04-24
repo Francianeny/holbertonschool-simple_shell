@@ -7,7 +7,7 @@
  */
 int main(void)
 {
-	char *cmd = NULL;
+	char *cmd = NULL, *path_copy = NULL;
 	size_t cmd_buffer_size = 0;
 	ssize_t line_length;
 	int is_interactive = isatty(STDIN_FILENO);
@@ -33,8 +33,7 @@ int main(void)
 		}
 		if (line_length <= 1)
 		{
-			/* If the line is empty or contains only a newline character */
-			continue;
+			continue;/* If line is empty or contains only a newline character */
 		}
 		if (cmd[line_length - 1] == '\n')
 		{
@@ -46,5 +45,6 @@ int main(void)
 		}
 	}
 	free(cmd); /* Free the dynamically allocated memory for the command line */
+	free(path_copy);
 	return (0);
 }
