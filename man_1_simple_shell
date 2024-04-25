@@ -45,6 +45,8 @@ Duplicate a string and return a pointer to the allocated memory.
 Execute the given command.
 .It \fBfind_and_execute_command(char *argv[])\fR
 Find and execute the specified command.
+.It \fBsearch_and_execute_command(char *path_copy, char *argv[])\fR
+Search the command with the specified path.
 .It \fBexecute_command_with_path(char *command_path, char *argv[])\fR
 Execute the command with the specified path.
 .El
@@ -99,7 +101,12 @@ And in non-interactive mode:
 Tifenn GUERIN, Francia Ramarolahy
 
 .Sh BUGS
-No known bugs.
+
+No arguments for the built-in exit
+.Pp
+No handle Ctrl+C
+.Pp
+No have cd, setenv and unsetenv builtin commands
 
 
 .Pp
