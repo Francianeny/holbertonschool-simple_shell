@@ -7,7 +7,7 @@
  */
 int main(void)
 {
-	char *cmd = NULL, *path_copy = NULL;
+	char *cmd = NULL;
 	size_t cmd_buffer_size = 0;
 	ssize_t line_length;
 	int is_interactive = isatty(STDIN_FILENO);
@@ -21,13 +21,16 @@ int main(void)
 		line_length = getline(&cmd, &cmd_buffer_size, stdin);
 		if (line_length == -1)
 		{
+			free(cmd);
 			if (is_interactive)
 			{
 				printf("\n");
+
 				exit(0); /* End of input file (Ctrl+D) in no interactive mode */
 			}
 			else
 			{
+
 				exit(0); /* (Ctrl+D) in interactive mode */
 			}
 		}
@@ -45,6 +48,5 @@ int main(void)
 		}
 	}
 	free(cmd); /* Free the dynamically allocated memory for the command line */
-	free(path_copy);
 	return (0);
 }

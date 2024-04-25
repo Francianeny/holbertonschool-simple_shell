@@ -9,6 +9,10 @@ void tokenize_input(char *cmd, char *argv[])
 {
 	int i = 0;
 
+	while (*cmd != '\0' && *cmd == ' ')
+	{
+		cmd++;
+	}
 	argv[i] = strtok(cmd, " ");
 	while (argv[i] != NULL && i < MAX_ARGS)
 	{
@@ -188,5 +192,5 @@ void execute_command_with_path(char *command_path, char *argv[])
 			exit(127);
 		}
 	}
-	free(command_path);
+	/*free(command_path);*/
 }
