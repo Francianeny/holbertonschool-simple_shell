@@ -9,7 +9,12 @@
 char *_getenv(const char *name)
 {
 	char **env = environ;
-	int name_len = strlen(name);
+	int name_len;
+
+	if (name != NULL)
+		name_len = strlen(name);
+	else
+		name_len = 0;
 
 	if (name == NULL || environ == NULL)
 		return (NULL);

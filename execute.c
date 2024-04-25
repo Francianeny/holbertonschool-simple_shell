@@ -45,7 +45,6 @@ int execute_command(char *cmd)
 	{
 		return (-1);
 	}
-
 	return (0);
 }
 
@@ -71,11 +70,11 @@ int find_and_execute_command(char *argv[])
 	if (path_copy == NULL)
 	{
 		perror("Error duplicating PATH string");
+		free(path);
 		return (1);
 	}
-
+	else
 	result = search_and_execute_command(path_copy, argv);
-
 	free(path_copy);
 	return (result);
 }
@@ -89,47 +88,58 @@ int find_and_execute_command(char *argv[])
  */
 int search_and_execute_command(char *path_copy, char *argv[])
 {
-	char *path_token = strtok(path_copy, ":");
-	int command_found = 0;
+	char *path_token;
+    int command_found = 0;
 
-	while (path_token != NULL)
-	{
-		size_t argv0_length = strlen(argv[0]);
-		size_t command_path_length = strlen(path_token) + argv0_length + 2;
-		char *command_path;
+    if (path_copy == NULL || argv == NULL || argv[0] == NULL)
+    {
+        fprintf(stderr, "Invalid input parameters\n");
+        return -1;
+    }
 
-		if (command_path_length >= MAX_COMMAND_PATH_LENGTH)
-		{
-			fprintf(stderr, "Error length\n");
-			exit(EXIT_FAILURE);
-		}
+    path_token = strtok(path_copy, ":");
 
-		command_path = malloc(command_path_length);
-		if (command_path == NULL)
-		{
-			perror("Error allocating memory for command_path");
-			exit(1);
-		}
+    while (path_token != NULL)
+    {
+        size_t argv0_length = strlen(argv[0]);
+        size_t path_token_length = strlen(path_token);
+        size_t command_path_length = path_token_length + argv0_length + 2;
+        char *command_path;
 
-		sprintf(command_path, "%s/%s", path_token, argv[0]);
-		if (access(command_path, X_OK) == 0)
-		{
-			command_found = 1;
-			execute_command_with_path(command_path, argv);
-			free(command_path);
-			break;
-		}
+        if (command_path_length >= MAX_COMMAND_PATH_LENGTH)
+        {
+            fprintf(stderr, "Error: Command path length exceeds maximum\n");
+            return (-1);
+        }
 
-		free(command_path);
-		path_token = strtok(NULL, ":");
-	}
+        command_path = malloc(command_path_length);
+        if (command_path == NULL)
+        {
+            perror("Error allocating memory for command_path");
+            return (-1);
+        }
 
-	if (!command_found)
-	{
-		execute_command_with_path(argv[0], argv);
-	}
-	return (0);
+        sprintf(command_path, "%s/%s", path_token, argv[0]);
+        if (access(command_path, X_OK) == 0)
+        {
+            command_found = 1;
+            execute_command_with_path(command_path, argv);
+            free(command_path);
+            break;
+        }
+
+        free(command_path);
+        path_token = strtok(NULL, ":");
+    }
+
+    if (!command_found)
+    {
+        execute_command_with_path(argv[0], argv);
+    }
+
+    return (0);
 }
+
 
 /**
  * execute_command_with_path - Execute the command with the specified path
@@ -141,6 +151,7 @@ void execute_command_with_path(char *command_path, char *argv[])
 	int status_child;
 	int count = 0;
 	char cwd[PATH_MAX];
+	char *gwd = getcwd(cwd, sizeof(cwd));
 	pid_t child_pid = fork();
 
 	if (child_pid == -1)
@@ -149,15 +160,15 @@ void execute_command_with_path(char *command_path, char *argv[])
 		free(command_path);
 		exit(1);
 		}
-	if (child_pid == 0)
+	if (child_pid == 0) /* Execute the command in the child process */
 	{
-		/* Execute the command in the child process */
 		if (execve(command_path, argv, NULL) == -1)
 		{
-			if (getcwd(cwd, sizeof(cwd)) != NULL)
+			if (gwd != NULL)
 			{
 				count++;
-				fprintf(stderr, "%s: %d: %s: not found\n", cwd, count, argv[0]);
+				fprintf(stderr, "%s: %d: %s: not found\n", gwd, count, argv[0]);
+				free(gwd);
 			}
 			else
 			{
@@ -168,9 +179,8 @@ void execute_command_with_path(char *command_path, char *argv[])
 
 		}
 	}
-	else
+	else /* Wait for the child process to finish in the parent process */
 	{
-		/* Wait for the child process to finish in the parent process */
 		if (wait(&status_child) == -1)
 		{
 			perror("Error wait");

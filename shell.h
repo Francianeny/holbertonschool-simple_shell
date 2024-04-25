@@ -11,7 +11,7 @@
 #include <limits.h>
 
 #define MAX_LINE_LENGTH 1024
-#define MAX_ARGS 10
+#define MAX_ARGS 64
 #define MAX_COMMAND_PATH_LENGTH 256
 
 extern char **environ;
