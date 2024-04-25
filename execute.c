@@ -192,5 +192,5 @@ void execute_command_with_path(char *command_path, char *argv[])
 			exit(127);
 		}
 	}
-	free(command_path);
+	/*free(command_path);*/
 }
