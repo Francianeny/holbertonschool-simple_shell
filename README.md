@@ -119,8 +119,12 @@ You can try your shell by following these steps:
 > ./hsh
 
 <font color=green>- ***Step 5 :</font>*** <p>*Interactive mode* :
-> ![alt text](<int mode.png>)<p>*Non-interactive mode* :
-(à vérifier, erreur de compilation à la fin)
+> ![alt text](<int mode.png>)
+
+*Non-interactive mode* :<br>> ![alt text](<non interactive mode-1.png>)
+
+
+
 
 
 <font color=green>**Exiting the shell :</font>** <p>When you want to exit the shell, you can use one of the following methods:
