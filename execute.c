@@ -34,6 +34,7 @@ int execute_command(char *cmd)
 
 	if (strcmp(cmd, "exit") == 0)
 	{
+		free(cmd);
 		exit(0);
 	}
 
@@ -92,56 +93,46 @@ int find_and_execute_command(char *argv[])
  */
 int search_and_execute_command(char *path_copy, char *argv[])
 {
-	char *path_token;
-    int command_found = 0;
+	char *path_token, *command_path;
+	int command_found = 0;
 
-    if (path_copy == NULL || argv == NULL || argv[0] == NULL)
-    {
-        fprintf(stderr, "Invalid input parameters\n");
-        return -1;
-    }
+	if (path_copy == NULL || argv == NULL || argv[0] == NULL)
+	{
+		fprintf(stderr, "Invalid input parameters\n");
+		return (-1);
+	}
+	path_token = strtok(path_copy, ":");
+	while (path_token != NULL)
+	{
+		size_t argv0_length = strlen(argv[0]);
+		size_t path_token_length = strlen(path_token);
+		size_t command_path_length = path_token_length + argv0_length + 2;
 
-    path_token = strtok(path_copy, ":");
-
-    while (path_token != NULL)
-    {
-        size_t argv0_length = strlen(argv[0]);
-        size_t path_token_length = strlen(path_token);
-        size_t command_path_length = path_token_length + argv0_length + 2;
-        char *command_path;
-
-        if (command_path_length >= MAX_COMMAND_PATH_LENGTH)
-        {
-            fprintf(stderr, "Error: Command path length exceeds maximum\n");
-            return (-1);
-        }
-
-        command_path = malloc(command_path_length);
-        if (command_path == NULL)
-        {
-            perror("Error allocating memory for command_path");
-            return (-1);
-        }
-
-        sprintf(command_path, "%s/%s", path_token, argv[0]);
-        if (access(command_path, X_OK) == 0)
-        {
-            command_found = 1;
-            execute_command_with_path(command_path, argv);
-            free(command_path);
-            break;
-        }
-
-        free(command_path);
-        path_token = strtok(NULL, ":");
-    }
-
-    if (!command_found)
-    {
-        execute_command_with_path(argv[0], argv);
-    }
-
-    return (0);
+		if (command_path_length >= MAX_COMMAND_PATH_LENGTH)
+		{
+			fprintf(stderr, "Error: Command path length exceeds maximum\n");
+			return (-1);
+		}
+		command_path = malloc(command_path_length);
+		if (command_path == NULL)
+		{
+			perror("Error allocating memory for command_path");
+			return (-1);
+		}
+		sprintf(command_path, "%s/%s", path_token, argv[0]);
+		if (access(command_path, X_OK) == 0)
+		{
+			command_found = 1;
+			execute_command_with_path(command_path, argv);
+			free(command_path);
+			break;
+		}
+		free(command_path);
+		path_token = strtok(NULL, ":");
+	}
+	if (!command_found)
+		execute_command_with_path(argv[0], argv);
+	return (0);
 }
 
 
@@ -175,12 +166,10 @@ void execute_command_with_path(char *command_path, char *argv[])
 				free(gwd);
 			}
 			else
-			{
 				perror("Error getting current directory");
-			}
+
 			free(command_path);
 			exit(127);
-
 		}
 	}
 	else /* Wait for the child process to finish in the parent process */
@@ -192,5 +181,4 @@ void execute_command_with_path(char *command_path, char *argv[])
 			exit(127);
 		}
 	}
-	/*free(command_path);*/
 }
