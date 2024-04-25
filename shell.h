@@ -19,9 +19,9 @@ extern char **environ;
 char *_getenv(const char *name);
 void print_environment(void);
 void tokenize_input(char *cmd, char *argv[]);
-int find_and_execute_command(char *argv[]);
-int search_and_execute_command(char *path_copy, char *argv[]);
-void execute_command_with_path(char *command_path, char *argv[]);
-int execute_command(char *cmd);
+int find_and_execute_command(char *argv[], char *av[], int line_n);
+int search_and_exec_cmd(char *path_copy, char *argv[], char *av[], int line_n);
+void exec_cmd_with_path(char *cmd_path, char *argv[], char *av[], int line_n);
+int execute_command(char *cmd, char *av[], int line_n);
 
 #endif /* SHELL_H */

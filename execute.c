@@ -28,7 +28,7 @@ void tokenize_input(char *cmd, char *argv[])
  *
  * Return: 0 on success, -1 on failure
  */
-int execute_command(char *cmd)
+int execute_command(char *cmd, char *av[], int line_n)
 {
 	char *argv[MAX_ARGS + 1]; /* Maximum number of arguments (+1 for NULL)*/
 
@@ -46,7 +46,7 @@ int execute_command(char *cmd)
 
 	tokenize_input(cmd, argv);
 
-	if (find_and_execute_command(argv) == -1)
+	if (find_and_execute_command(argv, av, line_n) == -1)
 	{
 		return (-1);
 	}
@@ -59,7 +59,7 @@ int execute_command(char *cmd)
  *
  * Return: 0 on success, 1 on failure
  */
-int find_and_execute_command(char *argv[])
+int find_and_execute_command(char *argv[], char *av[], int line_n)
 {
 	char *path, *path_copy;
 	int result;
@@ -79,7 +79,7 @@ int find_and_execute_command(char *argv[])
 		return (1);
 	}
 	else
-	result = search_and_execute_command(path_copy, argv);
+	result = search_and_exec_cmd(path_copy, argv, av, line_n);
 	free(path_copy);
 	return (result);
 }
@@ -91,7 +91,7 @@ int find_and_execute_command(char *argv[])
  *
  * Return: 0 on success, 1 on failure
  */
-int search_and_execute_command(char *path_copy, char *argv[])
+int search_and_exec_cmd(char *path_copy, char *argv[], char *av[], int line_n)
 {
 	char *path_token, *command_path;
 	int command_found = 0;
@@ -123,7 +123,7 @@ int search_and_execute_command(char *path_copy, char *argv[])
 		if (access(command_path, X_OK) == 0)
 		{
 			command_found = 1;
-			execute_command_with_path(command_path, argv);
+			exec_cmd_with_path(command_path, argv, av, line_n);
 			free(command_path);
 			break;
 		}
@@ -131,7 +131,7 @@ int search_and_execute_command(char *path_copy, char *argv[])
 		path_token = strtok(NULL, ":");
 	}
 	if (!command_found)
-		execute_command_with_path(argv[0], argv);
+		exec_cmd_with_path(argv[0], argv, av, line_n);
 	return (0);
 }
 
@@ -141,34 +141,23 @@ int search_and_execute_command(char *path_copy, char *argv[])
  * @command_path: Full path of the command to execute
  * @argv: Array of command arguments
  */
-void execute_command_with_path(char *command_path, char *argv[])
+void exec_cmd_with_path(char *cmd_path, char *argv[], char *av[], int line_n)
 {
 	int status_child;
-	int count = 0;
-	char cwd[PATH_MAX];
-	char *gwd = getcwd(cwd, sizeof(cwd));
 	pid_t child_pid = fork();
 
 	if (child_pid == -1)
 	{
 		perror("Error fork");
-		free(command_path);
+		free(cmd_path);
 		exit(1);
-		}
+	}
 	if (child_pid == 0) /* Execute the command in the child process */
 	{
-		if (execve(command_path, argv, NULL) == -1)
+		if (execve(cmd_path, argv, NULL) == -1)
 		{
-			if (gwd != NULL)
-			{
-				count++;
-				fprintf(stderr, "%s: %d: %s: not found\n", gwd, count, argv[0]);
-				free(gwd);
-			}
-			else
-				perror("Error getting current directory");
-
-			free(command_path);
+			fprintf(stderr, "%s: %d: %s: not found\n", av[0], line_n, argv[0]);
+			free(cmd_path);
 			exit(127);
 		}
 	}
@@ -177,7 +166,7 @@ void execute_command_with_path(char *command_path, char *argv[])
 		if (wait(&status_child) == -1)
 		{
 			perror("Error wait");
-			free(command_path);
+			free(cmd_path);
 			exit(127);
 		}
 	}

@@ -33,26 +33,36 @@ Print environment variables.
 .Sh FUNCTIONS
 
 .Bl -tag -width -indent  \" Begins a tagged list
-.It \fB_getenv(const char *name)\fR               \" Each item preceded by .It macro
+.It \fB_getenv
+(const char *name)\fR               \" Each item preceded by .It macro
 Get the value of an environment variable.
-.It \fBprint_environment(void)\fR
+.It \fBprint_environment
+(void)\fR
 Print all environment variables.
-.It \fBtokenize_input(char *cmd, char *argv[])\fR
+.It \fBtokenize_input
+(char *cmd, char *argv[])\fR
 Tokenize the input command.
-.It \fB_strdup(char *str)\fR
+.It \fB_strdup
+(char *str)\fR
 Duplicate a string and return a pointer to the allocated memory.
-.It \fBexecute_command(char *cmd)\fR
+.It \fBexecute_command
+(char *cmd, char *av[], int line_n)\fR
 Execute the given command.
-.It \fBfind_and_execute_command(char *argv[])\fR
+.It \fBfind_and_execute_command
+(char *argv[], char *av[], int line_n)\fR
 Find and execute the specified command.
-.It \fBsearch_and_execute_command(char *path_copy, char *argv[])\fR
+.It \fBsearch_and_exec_cmd
+(char *path_copy, char *argv[], char *av[],int line_n)\fR
 Search the command with the specified path.
-.It \fBexecute_command_with_path(char *command_path, char *argv[])\fR
+.It \fBexec_cmd_with_path
+(char *cmd_path, char *argv[], char *av[],int line_n)\fR
 Execute the command with the specified path.
 .El
 
 .Sh RETURN VALUE
-The \fBsimple_shell\fP program returns 0 upon successful execution. In case of errors, appropriate error messages are displayed, and the program exits with a non\-zero exit status.
+The \fBsimple_shell\fP program returns 0 upon successful execution.
+In case of errors, appropriate error messages are displayed, and the program
+exits with a non\-zero exit status.
 
 .Sh EXAMPLES
 .sp
