@@ -119,9 +119,12 @@ You can try your shell by following these steps:
 > ./hsh
 
 <font color=green>- ***Step 5 :</font>*** <p>*Interactive mode* :
-> ![alt text](<int mode.png>)
+> ![alt text](<Pictures for Simple Shell/int_mode.png>)
 
-*Non-interactive mode* :<br>> ![alt text](<non interactive mode-1.png>)
+
+*Non-interactive mode* :<br>> ![alt text](<Pictures for Simple Shell/non interactive mode-1.png>)
+
+
 
 
 
@@ -135,7 +138,7 @@ You can try your shell by following these steps:
 
 2. Press on Ctrl + D
 
-> ![alt text](<Capture d'écran 2024-04-23 150337.png>)
+> ![alt text](<Pictures for Simple Shell/Capture d'écran 2024-04-23 150337.png>)
 
 ### <font color=green>Target output :</font>
 * Unless specified otherwise, your program must have the exact same output as sh (/bin/sh) as well as the exact same error output.
@@ -143,14 +146,14 @@ You can try your shell by following these steps:
 
 Example of error with sh:
 
-> ![alt text](<message d'erreur.png>)
+> ![alt text](<Pictures for Simple Shell/message d'erreur.png>)
 
 ### <font color=blue>Flowchart :</font>
 <p>It's a tool that us individuals visualize a process in discrete steps organized in a sequence of events.
 
 It can be used to represent our workflows.
 
-> ![alt text](<Flowchart Simple Shell.png>)
+> ![alt text](<Pictures for Simple Shell/Flowchart Simple Shell.png>)
 
 
 
